@@ -1,15 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Sparkles, AlertCircle } from 'lucide-react';
-import { ApiKeyModal } from './components/ApiKeyModal';
 import { ChatBubble } from './components/ChatBubble';
 import { DataPanel } from './components/DataPanel';
 import { Message } from './types';
 import { sendMessageToGemini } from './services/gemini';
 
 export default function App() {
-  const [apiKey, setApiKey] = useState<string>('');
-  const [isKeyModalOpen, setKeyModalOpen] = useState(false);
-  
   const [dataContext, setDataContext] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -22,16 +18,6 @@ export default function App() {
   const [input, setInput] = useState('');
   const [isSending, setIsSending] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // Initial check for key
-    const storedKey = localStorage.getItem('gemini_api_key') || process.env.API_KEY;
-    if (storedKey) {
-        setApiKey(storedKey);
-    } else {
-        setKeyModalOpen(true);
-    }
-  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -48,10 +34,6 @@ export default function App() {
       alert("Por favor, conecta con Google Sheets o carga los datos primero.");
       return;
     }
-    if (!apiKey) {
-      setKeyModalOpen(true);
-      return;
-    }
 
     const newUserMsg: Message = {
       id: Date.now().toString(),
@@ -65,7 +47,7 @@ export default function App() {
     setIsSending(true);
 
     try {
-      const responseText = await sendMessageToGemini(apiKey, messages, input, dataContext);
+      const responseText = await sendMessageToGemini(messages, input, dataContext);
       const botMsg: Message = {
         id: (Date.now() + 1).toString(),
         role: 'model',
@@ -88,27 +70,12 @@ export default function App() {
 
   return (
     <div className="flex flex-col h-screen bg-gray-50 font-sans text-gray-900">
-      <ApiKeyModal 
-        isOpen={isKeyModalOpen} 
-        onSave={(key) => {
-          setApiKey(key);
-          setKeyModalOpen(false);
-        }} 
-      />
 
       {/* Header */}
       <header className="flex-shrink-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between sticky top-0 z-20">
         <div className="flex items-center gap-2 text-indigo-700">
           <Sparkles size={24} />
           <h1 className="text-xl font-bold tracking-tight">Analista de KPIs Retail</h1>
-        </div>
-        <div className="flex items-center gap-4">
-            <button 
-              onClick={() => setKeyModalOpen(true)}
-              className="text-xs text-gray-400 hover:text-indigo-600 font-medium"
-            >
-              {apiKey ? 'API Key Configurada' : 'Configurar API Key'}
-            </button>
         </div>
       </header>
 

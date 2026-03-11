@@ -25,16 +25,15 @@ DATASET:
 `;
 
 export const sendMessageToGemini = async (
-  apiKey: string,
   history: Message[],
   currentMessage: string,
   csvData: string
 ): Promise<string> => {
-  // Use the provided key or fallback to the environment variable
-  const finalApiKey = apiKey || process.env.GEMINI_API_KEY || process.env.API_KEY;
+  // Use the environment variable
+  const finalApiKey = process.env.GEMINI_API_KEY;
   
   if (!finalApiKey) {
-    throw new Error("No se encontró la clave de API. Por favor, configúrala en los ajustes o en el modal.");
+    throw new Error("No se encontró la clave de API configurada en el entorno.");
   }
 
   const ai = new GoogleGenAI({ apiKey: finalApiKey });
