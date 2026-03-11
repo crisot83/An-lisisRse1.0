@@ -1,0 +1,5 @@
+{
+  "name": "Analista de KPIs Retail",
+  "description": "Una herramienta de análisis basada en chat que se conecta a Google Sheets para analizar el rendimiento de las tiendas, detectar desviaciones frente a los puntos de referencia regionales/nacionales y sugerir prioridades de mejora.",
+  "requestFramePermissions": []
+}
