@@ -91,7 +91,7 @@ export default function App() {
                     setMessages(prev => [...prev, {
                         id: 'system-ready',
                         role: 'model',
-                        content: "**Datos cargados correctamente.** \n\nAhora puedo ver los datos de Ventas, Tráfico y KPIs. Prueba a preguntar: \n\n*\"¿Cómo está rindiendo la tienda Seville Plaza comparada con su región?\"*\n*\"¿Cuáles son las prioridades de mejora para la región Norte?\"*",
+                        content: "**Datos cargados correctamente.** \n\nAhora puedo ver los datos de Ventas, Tráfico y KPIs. Prueba a preguntar: \n\n*\"Indicar qué prioridades tiene la región sureste.\"*",
                         timestamp: new Date()
                     }]);
                 }
